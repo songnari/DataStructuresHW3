@@ -7,3 +7,25 @@
 //         1:rotated form
 //		   2:non-rotated form
 //		   3:H-tree form
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+int main (){
+	ifstream read;
+	read.open("input.txt");
+	char str[sizeof(read)] = { '\0' };
+
+	
+	if (read.good()) {
+		cout << "!!!" << endl;
+	}
+	else {
+		cout << "½ÇÆÐ" << endl;
+	}
+
+	read.close();
+	return 0;
+
+}
