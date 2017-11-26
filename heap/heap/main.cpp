@@ -15,11 +15,16 @@ using namespace std;
 int main (){
 	ifstream read;
 	read.open("input.txt");
-	char str[sizeof(read)] = { '\0' };
-
+	char arr[sizeof(read)] = { '\0' };
+	int n;
 	
 	if (read.good()) {
 		cout << "!!!" << endl;
+		while (!read.eof()) {  //파일 끝까지 읽기
+			read.getline(arr, sizeof(read));
+			for (int i = 0; i < sizeof(read); i++)
+				cout << arr[i] << " ";
+		}
 	}
 	else {
 		cout << "실패" << endl;
