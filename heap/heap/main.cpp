@@ -13,6 +13,8 @@
 
 class heap {
 public:
+	heap(char d, heap* l, heap* r) { data = d; lnode = l; rnode = r; }
+
 	void set_data(const char& newData) { data = newData; }
 	void set_left(heap* newL) { lnode = newL;  }
 	void set_right(heap* newR) { rnode = newR; }
@@ -23,6 +25,9 @@ public:
 	
 	bool is_leaf() const { return (lnode == NULL && rnode == NULL); }
 	//void clear(heap*& root); //오류발생
+
+	heap* search_insert(heap* root);
+	void insert(char newData);
 
 
 private:
@@ -41,15 +46,37 @@ private:
 	}
 }
 */
+heap* heap::search_insert(heap* root) {
+	if (!root->is_leaf()){
+		if (root->left() == NULL)
+			search_insert(root->lnode);
+		else if(root->right() == NULL)
+			search_insert(root->rnode);
+	}
+	else{
+		return root;
+	}
+}
+
+void heap::insert(char newData) {
+	heap newHeap(newData, NULL, NULL);
+	heap* target = search_insert(this);
+	if (target->left() == NULL) {
+		target->set_left(&newHeap);
+	}
+	else if(target->right() == NULL) {
+		target->set_right(&newHeap);
+	}
+}
 
 using namespace std;
 int main (){
 	ifstream read;
 	read.open("input.txt");
 	char arr[sizeof(read)] = { '\0' }; 
-	heap h;
-
-	
+	heap h('5',NULL,NULL);
+	h.insert('2');
+	/*
 	if (read.good()) {
 		while (!read.eof()) {  //파일 끝까지 읽기
 			read.getline(arr, sizeof(read));
@@ -70,6 +97,7 @@ int main (){
 	else {
 		cout << "실패" << endl;
 	}
+	*/
 
 	read.close();
 	return 0;
