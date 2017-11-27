@@ -59,13 +59,12 @@ heap* heap::search_insert(heap* root) {
 }
 
 void heap::insert(char newData) {
-	heap newHeap(newData, NULL, NULL);
 	heap* target = search_insert(this);
 	if (target->left() == NULL) {
-		target->set_left(&newHeap);
+		target = new heap(newData, NULL, NULL);
 	}
 	else if(target->right() == NULL) {
-		target->set_right(&newHeap);
+		target = new heap(newData, NULL, NULL);
 	}
 }
 
@@ -74,9 +73,9 @@ int main (){
 	ifstream read;
 	read.open("input.txt");
 	char arr[sizeof(read)] = { '\0' }; 
-	heap h('5',NULL,NULL);
-	h.insert('2');
-	/*
+	heap h('5', NULL, NULL);
+	h.insert(2);
+
 	if (read.good()) {
 		while (!read.eof()) {  //파일 끝까지 읽기
 			read.getline(arr, sizeof(read));
@@ -88,7 +87,7 @@ int main (){
 			for (int i = 0; i < sizeof(read); i++) {
 				if (arr[i] == 'I') {
 					if (arr[i + 1] == ' ') {
-						cout << arr[i + 2] << " ";
+						h.insert(arr[i + 2]);   // i+2 바꿔야함.
 					}
 				}
 			}
@@ -97,7 +96,6 @@ int main (){
 	else {
 		cout << "실패" << endl;
 	}
-	*/
 
 	read.close();
 	return 0;
