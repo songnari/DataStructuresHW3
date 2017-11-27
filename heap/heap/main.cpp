@@ -11,19 +11,60 @@
 #include<iostream>
 #include<fstream>
 
+class heap {
+public:
+	void set_data(const char& newData) { data = newData; }
+	void set_left(heap* newL) { lnode = newL;  }
+	void set_right(heap* newR) { rnode = newR; }
+
+	const char& show_data() { return data; }
+	const heap* left() { return lnode; }
+	const heap* right() { return rnode; }
+	
+	bool is_leaf() const { return (lnode == NULL && rnode == NULL); }
+	//void clear(heap*& root); //오류발생
+
+
+private:
+	char data;
+	heap* lnode;
+	heap* rnode;
+};
+
+/*void heap::clear(heap*& root)
+{
+	if (root != NULL) {
+		clear(root->left());
+		clear(root->right());
+		delete root;
+		root = NULL;
+	}
+}
+*/
+
 using namespace std;
 int main (){
 	ifstream read;
 	read.open("input.txt");
-	char arr[sizeof(read)] = { '\0' };
-	int n;
+	char arr[sizeof(read)] = { '\0' }; 
+	heap h;
+
 	
 	if (read.good()) {
-		cout << "!!!" << endl;
 		while (!read.eof()) {  //파일 끝까지 읽기
 			read.getline(arr, sizeof(read));
-			for (int i = 0; i < sizeof(read); i++)
-				cout << arr[i] << " ";
+			for (int i = 0; i < sizeof(read); i++) {
+				if (arr[i] != ' ')
+					cout << arr[i] << " ";
+			}
+			cout << endl;
+			for (int i = 0; i < sizeof(read); i++) {
+				if (arr[i] == 'I') {
+					if (arr[i + 1] == ' ') {
+						cout << arr[i + 2] << " ";
+					}
+				}
+			}
 		}
 	}
 	else {
@@ -34,3 +75,5 @@ int main (){
 	return 0;
 
 }
+
+
