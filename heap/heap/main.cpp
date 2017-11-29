@@ -19,7 +19,7 @@ public:
 	int left(int i) {return (2 * i + 1); }
 	int right(int i) { return (2 * i + 2); }
 
-	char showData(int i) { return data[i]; }
+	char showData(int i);
 	char showUsed() { return used; }
 
 	void insert(char newData);
@@ -40,6 +40,20 @@ heap::heap() : capacity(10) {
 	used = 0;
 }
 
+char heap::showData(int i){
+	if (data[i] > 64) {
+		if (data[i] > 96) {
+			return data[i]- 32;
+		}
+		else {
+			return data[i]+ 32;
+		}
+
+	}
+	else
+		return data[i];
+}
+
 void heap::insert(char newData) {
 	if (used == capacity) {
 		char* temp=new char[++capacity];
@@ -48,6 +62,14 @@ void heap::insert(char newData) {
 		}
 		delete[] data;
 		data = temp;
+	}
+	if (newData > 64) {
+		if (newData > 96) {
+			newData -= 32;
+		}
+		else {
+			newData += 32;
+		}
 	}
 	data[used] = newData;
 	infix(used);
