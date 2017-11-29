@@ -26,8 +26,8 @@ public:
 	char showUsed() { return used; }
 
 	void rotated(int i);
-	void nonRotated(int i);
-	//void Htree();
+	void nonRotated(int i); // 간격 조정 필요
+	void Htree(int i);
 
 	void insert(char newData);
 	void del();
@@ -84,7 +84,7 @@ int heap::ldepth(int i) {
 void heap::rotated(int i) {
 	if (i < used) {
 		rotated(right(i));
-		std::cout << std::setw(4 * depth(i)) << data[i] << "\n";
+		std::cout << std::setw(ldepth(0) * depth(i)) << showData(i) << "\n";
 		rotated(left(i));
 	}
 }
@@ -98,13 +98,21 @@ void heap::nonRotated(int i) {
 		for (int k = 0; k < count; k++) {
 			if (i + k == used)
 				break;
-			std::cout << std::setw(3*ldepth(i)) << data[i+k];
+			std::cout << std::setw(depth(used)*ldepth(i)) << showData(i+k);
 		}
 		std::cout << "\n";
 		nonRotated(left(i));
 	}
 	std::cout << "\n";
 	
+}
+
+void heap::Htree(int i) {
+	//홀수일때 세로, 짝수일때 가로.
+	//mxn매트릭스?
+	//(ldepth(0)인 가로세로 메트릭스에 하나씩 저장..?
+
+
 }
 
 void heap::insert(char newData) {
@@ -200,22 +208,32 @@ int main (){
 	}
 
 	cin >> format;
-
 	switch (format)
 	{
 	case 1: h.rotated(0); break;
 	case 2: h.nonRotated(0); break;
-	//case 3: h.Htree(); break;
+	case 3: h.Htree(0); break;
 	default:
 		break;
 	}
-	cin >> format;
 
+	cin >> format;
 	switch (format)
 	{
 	case 1: h.rotated(0); break;
 	case 2: h.nonRotated(0); break;
-		//case 3: h.Htree(); break;
+	case 3: h.Htree(0); break;
+	default:
+		break;
+	}
+
+
+	cin >> format;
+	switch (format)
+	{
+	case 1: h.rotated(0); break;
+	case 2: h.nonRotated(0); break;
+	case 3: h.Htree(0); break;
 	default:
 		break;
 	}
