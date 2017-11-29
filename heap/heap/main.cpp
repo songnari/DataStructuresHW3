@@ -20,12 +20,13 @@ public:
 	int left(int i) {return (2 * i + 1); }
 	int right(int i) { return (2 * i + 2); }
 	int depth(int i);
+	int ldepth(int i);
 
 	char showData(int i);
 	char showUsed() { return used; }
 
 	void rotated(int i);
-	//void nonRotated();
+	void nonRotated(int i);
 	//void Htree();
 
 	void insert(char newData);
@@ -70,12 +71,40 @@ int heap::depth(int i) {
 	return depth;
 }
 
+int heap::ldepth(int i) {
+	int temp = i;
+	int ldepth = 0;
+	while (temp < capacity) {
+		ldepth++;
+		temp = left(temp);
+	}
+	return ldepth;
+}
+
 void heap::rotated(int i) {
 	if (i < used) {
 		rotated(right(i));
 		std::cout << std::setw(4 * depth(i)) << data[i] << "\n";
 		rotated(left(i));
 	}
+}
+
+void heap::nonRotated(int i) {
+	if (i <used) {
+		int count=1;
+		for (int k = 0; k < depth(i); k++) {
+			count *= 2;
+		}
+		for (int k = 0; k < count; k++) {
+			if (i + k == used)
+				break;
+			std::cout << std::setw(3*ldepth(i)) << data[i+k];
+		}
+		std::cout << "\n";
+		nonRotated(left(i));
+	}
+	std::cout << "\n";
+	
 }
 
 void heap::insert(char newData) {
@@ -169,14 +198,24 @@ int main (){
 	else {
 		cout << "½ÇÆÐ" << endl;
 	}
-	
+
 	cin >> format;
 
 	switch (format)
 	{
 	case 1: h.rotated(0); break;
-	//case 2: h.nonRotated(); break;
+	case 2: h.nonRotated(0); break;
 	//case 3: h.Htree(); break;
+	default:
+		break;
+	}
+	cin >> format;
+
+	switch (format)
+	{
+	case 1: h.rotated(0); break;
+	case 2: h.nonRotated(0); break;
+		//case 3: h.Htree(); break;
 	default:
 		break;
 	}
