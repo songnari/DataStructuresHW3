@@ -10,6 +10,7 @@
 
 #include<iostream>
 #include<fstream>
+#include<iomanip>
 
 class heap {
 public:
@@ -18,9 +19,14 @@ public:
 	int parent(int i) { return (i - 1)/2; }
 	int left(int i) {return (2 * i + 1); }
 	int right(int i) { return (2 * i + 2); }
+	int depth(int i);
 
 	char showData(int i);
 	char showUsed() { return used; }
+
+	void rotated(int i);
+	//void nonRotated();
+	//void Htree();
 
 	void insert(char newData);
 	void del();
@@ -52,6 +58,24 @@ char heap::showData(int i){
 	}
 	else
 		return data[i];
+}
+
+int heap::depth(int i) {
+	int temp = i;
+	int depth = 0;
+	while (temp!=0) {
+		depth++;
+		temp = parent(temp);
+	}
+	return depth;
+}
+
+void heap::rotated(int i) {
+	if (i < used) {
+		rotated(right(i));
+		std::cout << std::setw(4 * depth(i)) << data[i] << "\n";
+		rotated(left(i));
+	}
 }
 
 void heap::insert(char newData) {
@@ -120,6 +144,7 @@ int main (){
 	read.open("input.txt");
 	char arr[sizeof(read)] = { '\0' }; 
 	heap h;
+	int format;
 	
 	if (read.good()) {
 		while (!read.eof()) {  //파일 끝까지 읽기
@@ -145,6 +170,16 @@ int main (){
 		cout << "실패" << endl;
 	}
 	
+	cin >> format;
+
+	switch (format)
+	{
+	case 1: h.rotated(0); break;
+	//case 2: h.nonRotated(); break;
+	//case 3: h.Htree(); break;
+	default:
+		break;
+	}
 
 	read.close();
 	return 0;
