@@ -13,59 +13,83 @@
 
 class heap {
 public:
-	heap(char d, heap* l, heap* r) { data = d; lnode = l; rnode = r; }
+	heap();
 
-	void set_data(const char& newData) { data = newData; }
-	void set_left(heap* newL) { lnode = newL;  }
-	void set_right(heap* newR) { rnode = newR; }
+	int parent(int i) { return (i - 1)/2; }
+	int left(int i) {return (2 * i + 1); }
+	int right(int i) { return (2 * i + 2); }
 
-	const char& show_data() { return data; }
-	const heap* left() { return lnode; }
-	const heap* right() { return rnode; }
-	
-	bool is_leaf() const { return (lnode == NULL && rnode == NULL); }
-	//void clear(heap*& root); //오류발생
+	char showData(int i) { return data[i]; }
+	char showUsed() { return used; }
 
-	heap* search_insert(heap* root);
 	void insert(char newData);
+	void del();
 
+	void swap(int a, int b); 
+	void infix(int i);
+	void delfix(int i); //test필요
 
 private:
-	char data;
-	heap* lnode;
-	heap* rnode;
+	char* data;
+	int capacity;
+	int used; //number of elements
 };
 
-/*void heap::clear(heap*& root)
-{
-	if (root != NULL) {
-		clear(root->left());
-		clear(root->right());
-		delete root;
-		root = NULL;
-	}
-}
-*/
-heap* heap::search_insert(heap* root) {
-	if (!root->is_leaf()){
-		if (root->left() == NULL)
-			search_insert(root->lnode);
-		else if(root->right() == NULL)
-			search_insert(root->rnode);
-	}
-	else{
-		return root;
-	}
+heap::heap() : capacity(10) {
+	data = new char[capacity];
+	used = 0;
 }
 
 void heap::insert(char newData) {
-	heap* target = search_insert(this);
-	if (target->left() == NULL) {
-		target = new heap(newData, NULL, NULL);
+	if (used == capacity) {
+		char* temp=new char[++capacity];
+		for (int i = 0; i < used; i++) {
+			temp[i] = data[i];
+		}
+		delete[] data;
+		data = temp;
 	}
-	else if(target->right() == NULL) {
-		target = new heap(newData, NULL, NULL);
+	data[used] = newData;
+	infix(used);
+	used++;
+}
+
+void heap::infix(int i) {
+	if (i != 0){
+		if (data[parent(i)] < data[i]) {
+			swap(i, parent(i));
+			infix(parent(i));
+		}
 	}
+}
+
+void heap::del() {
+	if (used != 0) {
+		swap(0, used);
+		used--;
+		delfix(0);
+	}
+}
+
+void heap::delfix(int i) {
+	if (i != used){
+		if (data[i] < data[left(i)]) {
+			swap(i, left(i));
+			delfix(left(i));
+		}
+		if (data[i] < data[right(i)]) {
+			swap(i, right(i));
+			delfix(right(i));
+		}
+	}
+}
+
+
+void heap::swap(int a, int b) {
+	char temp;
+	temp = data[a];
+	data[a] = data[b];
+	data[b] = temp;
 }
 
 using namespace std;
@@ -73,9 +97,8 @@ int main (){
 	ifstream read;
 	read.open("input.txt");
 	char arr[sizeof(read)] = { '\0' }; 
-	heap h('5', NULL, NULL);
-	h.insert(2);
-
+	heap h;
+	
 	if (read.good()) {
 		while (!read.eof()) {  //파일 끝까지 읽기
 			read.getline(arr, sizeof(read));
@@ -87,15 +110,19 @@ int main (){
 			for (int i = 0; i < sizeof(read); i++) {
 				if (arr[i] == 'I') {
 					if (arr[i + 1] == ' ') {
-						h.insert(arr[i + 2]);   // i+2 바꿔야함.
+						h.insert(arr[i + 2]);   // i+2 바꿔야함
 					}
 				}
+			}
+			for (int i = 0; i < h.showUsed(); i++) {
+				cout << h.showData(i) << " ";
 			}
 		}
 	}
 	else {
 		cout << "실패" << endl;
 	}
+	
 
 	read.close();
 	return 0;
