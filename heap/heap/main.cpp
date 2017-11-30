@@ -134,7 +134,7 @@ void heap::Htree(int i) {
 void heap::h(int node, char c, char** tree, int i, int j, int d[], int u[], int r[], int l[]) {
 	if (node < used) {
 		if (node!=0 && ldepth(node)>2 && used > 7) {
-			for (int k = 0; k < ldepth(node)/ 2; k++) {
+			for (int k = 0; k < (ldepth(node)-1)/ 2; k++) {
 				tree[i][j] = '#';
 				i += u[0];
 				j += u[1];
