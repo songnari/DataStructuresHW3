@@ -26,8 +26,9 @@ public:
 	char showUsed() { return used; }
 
 	void rotated(int i);
-	void nonRotated(int i); // 간격 조정 필요
+	void nonRotated(int i);
 	void Htree(int i);
+	void h(int node, char c, char** tree,int i, int j, int d[], int u[], int r[], int l[]);
 
 	void insert(char newData);
 	void del();
@@ -108,11 +109,65 @@ void heap::nonRotated(int i) {
 }
 
 void heap::Htree(int i) {
-	//홀수일때 세로, 짝수일때 가로.
-	//mxn매트릭스?
-	//(ldepth(0)인 가로세로 메트릭스에 하나씩 저장..?
+	char** htree=new char*[25];
+	for (int j = 0; j < 24; j++) {
+		htree[j] = new char[17];
+	}
+	for (int j = 0; j < 17; j++) {
+		for (int k = 0; k < 25; k++) {
+			htree[j][k] = ' ';
+		}
+	}
+	int v[4][2] = { { -1,0 },{ 1,0 },{ 0,1 },{ 0,-1 } }; // 남,북,동,서
 
+	h(0, showData(0), htree, 9, 15, v[0], v[1], v[2], v[3]);
 
+	for (int j = 0; j < 17; j++) {
+		for (int k = 0; k < 25; k++) {
+			std :: cout << htree[j][k] << " ";
+		}
+		std::cout << "\n";
+	}
+	delete[]htree;
+}
+
+void heap::h(int node, char c, char** tree, int i, int j, int d[], int u[], int r[], int l[]) {
+	if (node < used) {
+		if (node!=0 && ldepth(node)>2) {
+			for (int k = 0; k < (ldepth(node)-1) / 2; k++) {
+				tree[i][j] = '#';
+				i += u[0];
+				j += u[1];
+			}
+			if (ldepth(node) > 4) {
+				tree[i][j] = '#';
+				i += u[0];
+				j += u[1];
+			}
+			if (used>127 && node ==1) {
+				tree[i][j] = '#';
+				i += u[0];
+				j += u[1];
+			}
+			if(used > 131 && node ==1) {
+				tree[i][j] = '#';
+				i += u[0];
+				j += u[1];
+			}
+			if (used > 132 && node ==1) {
+				tree[i][j] = '#';
+				i += u[0];
+				j += u[1];
+			}
+			
+			tree[i][j] = showData(node);
+		}
+		else {
+			tree[i][j] = c;
+		}
+		h(left(node), showData(left(node)), tree, i + l[0], j + l[1], r, l, u, d);
+		h(right(node), showData(right(node)), tree, i + r[0], j + r[1], l, r, d, u);
+	}
 }
 
 void heap::insert(char newData) {
@@ -175,6 +230,7 @@ void heap::swap(int a, int b) {
 	data[b] = temp;
 }
 
+
 using namespace std;
 int main (){
 	ifstream read;
@@ -216,29 +272,6 @@ int main (){
 	case 1: h.rotated(0); break;
 	case 2: h.nonRotated(0); break;
 	case 3: h.Htree(0); break;
-	default:
-		break;
-	}
-
-	cin >> format;
-	switch (format)
-	{
-	case 1: h.rotated(0); break;
-	case 2: h.nonRotated(0); break;
-	case 3: h.Htree(0); break;
-	default:
-		break;
-	}
-
-
-	cin >> format;
-	switch (format)
-	{
-	case 1: h.rotated(0); break;
-	case 2: h.nonRotated(0); break;
-	case 3: h.Htree(0); break;
-	default:
-		break;
 	}
 
 	read.close();
