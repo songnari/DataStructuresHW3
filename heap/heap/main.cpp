@@ -97,7 +97,7 @@ void heap::nonRotated(int i) {
 			count *= 2;
 		}
 		for (int k = 0; k < count; k++) {
-			if (i + k == used)
+			if (i + k >= used)
 				break;
 			std::cout << std::setw(depth(used)*ldepth(i)) << showData(i+k);
 		}
@@ -202,22 +202,20 @@ void heap::infix(int i) {
 }
 
 void heap::del() {
-	if (used != 0) {
-		swap(0, used);
+	if (used > 0) {
+		swap(0, used-1);
 		used--;
 		delfix(0);
 	}
+	else if (used==0)
+		data[0] = ' ';
 }
 
 void heap::delfix(int i) {
-	if (i != used){
+	if (i < used){
 		if (data[i] < data[left(i)]) {
 			swap(i, left(i));
 			delfix(left(i));
-		}
-		if (data[i] < data[right(i)]) {
-			swap(i, right(i));
-			delfix(right(i));
 		}
 	}
 }
