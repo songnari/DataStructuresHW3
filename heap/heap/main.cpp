@@ -179,33 +179,36 @@ using namespace std;
 int main (){
 	ifstream read;
 	read.open("input.txt");
-	char arr[sizeof(read)] = { '\0' }; 
 	heap h;
 	int format;
-	
-	if (read.good()) {
-		while (!read.eof()) {  //파일 끝까지 읽기
-			read.getline(arr, sizeof(read));
-			for (int i = 0; i < sizeof(read); i++) {
-				if (arr[i] != ' ')
-					cout << arr[i] << " ";
-			}
-			cout << endl;
-			for (int i = 0; i < sizeof(read); i++) {
-				if (arr[i] == 'I') {
-					if (arr[i + 1] == ' ') {
-						h.insert(arr[i + 2]);   // i+2 바꿔야함
-					}
-				}
-			}
-			for (int i = 0; i < h.showUsed(); i++) {
-				cout << h.showData(i) << " ";
-			}
+	int num;
+	char buf;
+
+	if (!read.good()) {
+		cout << "not good" << endl;
+		exit(1);
+	}
+	else{
+		cout << "good" << endl;
+	}
+
+	read >> num; // 첫 숫자 저장
+
+	for (int i = 0; i < num;) {
+		read >> buf;
+		if (buf == 'I') {
+			i++;
+			read >> buf;
+			h.insert(buf);
+		}
+		else if (buf == 'D') {
+			i++;
+			h.del();
+			cout << "del" << endl;
 		}
 	}
-	else {
-		cout << "실패" << endl;
-	}
+
+	cout << "1.rotated form  2.not-rotated form  3.H-tree form" << endl;
 
 	cin >> format;
 	switch (format)
