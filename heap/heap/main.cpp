@@ -104,37 +104,37 @@ void heap::nonRotated(int i) {
 		std::cout << "\n";
 		nonRotated(left(i));
 	}
-	std::cout << "\n";
-	
 }
 
 void heap::Htree(int i) {
 	char** htree=new char*[25];
-	for (int j = 0; j < 24; j++) {
-		htree[j] = new char[17];
+	for (int j = 0; j < 25; j++) {
+		htree[j] = new char[25];
 	}
-	for (int j = 0; j < 17; j++) {
+	for (int j = 0; j < 25; j++) {
 		for (int k = 0; k < 25; k++) {
 			htree[j][k] = ' ';
 		}
 	}
 	int v[4][2] = { { -1,0 },{ 1,0 },{ 0,1 },{ 0,-1 } }; // 남,북,동,서
 
-	h(0, showData(0), htree, 9, 15, v[0], v[1], v[2], v[3]);
+	h(0, showData(0), htree, 12, 15, v[0], v[1], v[2], v[3]);
 
-	for (int j = 0; j < 17; j++) {
+	for (int j = 0; j < 25; j++) {
 		for (int k = 0; k < 25; k++) {
 			std :: cout << htree[j][k] << " ";
 		}
 		std::cout << "\n";
 	}
-	delete[]htree;
+	for(int j=0;j<25;j++)
+		delete[] htree[j];
+	delete[] htree;
 }
 
 void heap::h(int node, char c, char** tree, int i, int j, int d[], int u[], int r[], int l[]) {
 	if (node < used) {
-		if (node!=0 && ldepth(node)>2) {
-			for (int k = 0; k < (ldepth(node)-1) / 2; k++) {
+		if (node!=0 && ldepth(node)>2 && used > 7) {
+			for (int k = 0; k < ldepth(node)/ 2; k++) {
 				tree[i][j] = '#';
 				i += u[0];
 				j += u[1];
@@ -159,7 +159,6 @@ void heap::h(int node, char c, char** tree, int i, int j, int d[], int u[], int 
 				i += u[0];
 				j += u[1];
 			}
-			
 			tree[i][j] = showData(node);
 		}
 		else {
@@ -234,16 +233,11 @@ int main (){
 	ifstream read;
 	read.open("input.txt");
 	heap h;
-	int format;
 	int num;
 	char buf;
 
 	if (!read.good()) {
-		cout << "not good" << endl;
 		exit(1);
-	}
-	else{
-		cout << "good" << endl;
 	}
 
 	read >> num; // 첫 숫자 저장
@@ -262,15 +256,14 @@ int main (){
 		}
 	}
 
-	cout << "1.rotated form  2.not-rotated form  3.H-tree form" << endl;
-
-	cin >> format;
-	switch (format)
-	{
-	case 1: h.rotated(0); break;
-	case 2: h.nonRotated(0); break;
-	case 3: h.Htree(0); break;
-	}
+	cout << "1.rotated form " << endl;
+	h.rotated(0);
+		
+	cout << "2.not-rotated form" << endl;
+	h.nonRotated(0);
+		
+	cout << "3.H - tree form" << endl;
+	h.Htree(0);
 
 	read.close();
 	return 0;
